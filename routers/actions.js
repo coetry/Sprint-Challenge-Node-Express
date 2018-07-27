@@ -67,7 +67,15 @@ actions.put('/:id', async (req, res, next) => {
   
 })
 
-actions.delete('/:id', (req, res, next) => {
+actions.delete('/:id', async (req, res, next) => {
+  const id = +req.params.id
+
+  try {
+    const numDeleted = await Actions.remove(id)
+    res.status(200).send(`successfully deleted ${numDeleted} action(s)`)
+  } catch(e) {
+    sendError(500, e.message, next)
+  }
 })
 
 actions.use((err, req, res, next) => {
