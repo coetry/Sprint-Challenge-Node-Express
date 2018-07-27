@@ -32,7 +32,15 @@ actions.get('/', async (req, res, next) => {
   }
 })
 
-actions.get('/:id', (req, res, next) => {
+actions.get('/:id', async (req, res, next) => {
+  const id = +req.params.id
+
+  try {
+    const action = await Actions.get(id)
+    res.status(200).json(action)
+  } catch(e) {
+    sendError(500, e.message, next)
+  }
 })
 
 actions.put('/:id', (req, res, next) => {
