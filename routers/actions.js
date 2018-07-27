@@ -43,7 +43,28 @@ actions.get('/:id', async (req, res, next) => {
   }
 })
 
-actions.put('/:id', (req, res, next) => {
+actions.put('/:id', async (req, res, next) => {
+  checkActionBody(req, next)
+  
+  const id = +req.params.id
+
+  const { 
+    project_id,
+    description,
+    notes 
+  } = req.body
+
+  const actionBody = notes 
+    ? { project_id, description, notes }
+    : { project_id, description, notes: "" }
+
+  try {
+    const action = await Actions.update(id, actionBody)
+    res.status(200).json(action)
+  } catch(e) {
+    sendError(500, e.message, next)
+  }
+  
 })
 
 actions.delete('/:id', (req, res, next) => {
