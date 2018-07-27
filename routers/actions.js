@@ -23,7 +23,13 @@ actions.post('/', async (req, res, next) => {
   }
 })
 
-actions.get('/', (req, res, next) => {
+actions.get('/', async (req, res, next) => {
+  try {
+    const actions = await Actions.get()
+    res.status(200).json(actions)
+  } catch(e) {
+    sendError(500, e.message, next)
+  }
 })
 
 actions.get('/:id', (req, res, next) => {
