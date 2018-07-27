@@ -33,7 +33,17 @@ projects.get('/:id', async (req, res, next) => {
   } catch(e) {
     sendError(500, e.message, next)
   }
+})
 
+projects.get('/:id/actions', async (req, res, next) => {
+  const id = +req.params.id
+
+  try {
+    const { actions } = await Projects.get(id)
+    res.status(200).json(actions)
+  } catch(e) {
+    sendError(500, e.message, next)
+  }
 })
 
 projects.put('/:id', async (req, res, next) => {
@@ -60,6 +70,7 @@ projects.delete('/:id', async (req, res, next) => {
     sendError(500, e.message, next)
   }
 })
+
 
 projects.use((err, req, res, next) => {
   res.status(err.code).json({
