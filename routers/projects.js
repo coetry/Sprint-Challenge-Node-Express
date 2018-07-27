@@ -47,12 +47,11 @@ projects.get('/:id/actions', async (req, res, next) => {
 })
 
 projects.put('/:id', async (req, res, next) => {
-  checkProjectBody(req, next)
   
   const id = +req.params.id
-  const { name, description } = req.body 
+  
   try {
-    const project = await Projects.update(id, { name, description })
+    const project = await Projects.update(id, req.body)
     res.status(200).json(project)
   } catch(e) {
     sendError(500, e.message, next)
