@@ -62,9 +62,8 @@ projects.delete('/:id', async (req, res, next) => {
   const id = +req.params.id
 
   try {
-    const message = await Projects.remove(id)
-    console.log('MESSAGE:', message)
-    res.status(200).send(`successfully deleted ${message} project(s)`)
+    const numDeleted = await Projects.remove(id)
+    res.status(200).send(`successfully deleted ${numDeleted} project(s)`)
   } catch(e) {
     sendError(500, e.message, next)
   }
