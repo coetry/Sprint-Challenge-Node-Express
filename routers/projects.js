@@ -20,7 +20,16 @@ projects.post('/', async (req, res, next) => {
   }
 })
 
-projects.get('/', (req, res, next) => {
+projects.get('/', async (req, res, next) => {
+  try {
+    const projects = await Projects.get()
+    res.status(200).json(projects)
+  } catch(e){
+    next({
+      code: 500,
+      message: e.message
+    })
+  }
 })
 
 projects.get('/:id', (req, res, next) => {
