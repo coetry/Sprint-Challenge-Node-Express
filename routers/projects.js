@@ -49,7 +49,16 @@ projects.put('/:id', async (req, res, next) => {
   }
 })
 
-projects.delete('/:id', (req, res, next) => {
+projects.delete('/:id', async (req, res, next) => {
+  const id = +req.params.id
+
+  try {
+    const message = await Projects.remove(id)
+    console.log('MESSAGE:', message)
+    res.status(200).send(`successfully deleted ${message} project(s)`)
+  } catch(e) {
+    sendError(500, e.message, next)
+  }
 })
 
 projects.use((err, req, res, next) => {
