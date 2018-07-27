@@ -32,7 +32,19 @@ projects.get('/', async (req, res, next) => {
   }
 })
 
-projects.get('/:id', (req, res, next) => {
+projects.get('/:id', async (req, res, next) => {
+  const id = +req.params.id
+
+  try {
+    const project = await Projects.get(id)
+    res.status(200).json(project)
+  } catch(e) {
+    next({
+      code: 500,
+      message: e.message
+    })
+  }
+
 })
 
 projects.put('/:id', (req, res, next) => {
