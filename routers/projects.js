@@ -1,7 +1,23 @@
 const express = require('express')
 const projects = express.Router()
+const Projects = require('../data/helpers/projectModel')
 
-projects.post('/', (req, res, next) => {
+projects.post('/', async (req, res, next) => {
+  if (!req.body || !req.body.name || !req.body.description) {
+    next({ 
+      code: 400, 
+      message: "please provide name and description"
+    })
+  }
+
+  const { name, description } = req.body
+
+  try {
+    const project = await Projects.insert({ name, description })
+    res.status(200).json(project)
+  } catch(e) {
+    next({ code: 500, message: e.message })
+  }
 })
 
 projects.get('/', (req, res, next) => {

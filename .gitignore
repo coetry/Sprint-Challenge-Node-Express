@@ -67,3 +67,6 @@ typings/
 # Vim
 *.swp
 *.swo
+
+# Project Files
+data/lambda.sqlite3
